@@ -49,6 +49,7 @@ class Kemungkinan:
       "status": "success"
     }
 
+
   def delete(self, delete_criteria):
     try:
       mongo.db.kemungkinan.delete_one(delete_criteria)
