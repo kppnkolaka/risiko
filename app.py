@@ -1,10 +1,12 @@
 from flask import Flask
 from config.config import mongo, MONGO_URI
+from flask_cors import CORS
 from controllers.referensi import referensi_blueprint
 from controllers.risiko import risiko_blueprint
 from controllers.sasaran import sasaran_blueprint
 
 app = Flask(__name__)
+CORS(app)
 app.config["MONGO_URI"] = MONGO_URI
 mongo.init_app(app)
 
