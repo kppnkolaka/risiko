@@ -19,3 +19,20 @@ def index():
 
   message['data'] = query_result
   return jsonify(message)
+
+
+@sasaran_blueprint.route('/sasaran/<id>', methods=['GET'])
+def show(id):
+  message = {
+    "status": "success",
+    "data": {}
+  }
+
+  try:
+    query_result = Sasaran().show(id)
+  except Exception as error:
+    message['status'] = error
+    return message
+
+  message['data'] = query_result
+  return jsonify(message)

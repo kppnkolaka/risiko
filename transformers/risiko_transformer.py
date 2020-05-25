@@ -1,7 +1,9 @@
+from models.sasaran import Sasaran
+
 class RisikoTransformer:
   __input_schema = {
     "kppn": "156",
-    "sasaran_organisasi_id": "",
+    "sasaran_organisasi": "",
     "nomor": "",
     "risiko": {
       "kejadian": "",
@@ -12,7 +14,10 @@ class RisikoTransformer:
     "sistem_pengendalian": "",
     "kemungkinan_id": "",
     "dampak_id": "",
-    "besaran_risiko": "",
+    "besaran_risiko": {
+      "awal": "",
+      "akhir": ""
+    },
     "LR": "",
     "prioritas": "",
     "risiko_residual": {
@@ -113,8 +118,9 @@ class RisikoTransformer:
   def transform_input(self, form_data):
     if len(form_data) < 7:
       self.__input_schema['nomor'] = form_data['nomor']
-      self.__input_schema['sasaran_organisasi_id'] = form_data['sasaran_organisasi_id']
-      self.__input_schema['besaran_risiko'] = form_data['besaran_risiko']
+      self.__input_schema['sasaran_organisasi'] = Sasaran().show(form_data['sasaran_organisasi_id'])['desc']
+      self.__input_schema['besaran_risiko']['awal'] = form_data['awal']
+      self.__input_schema['besaran_risiko']['akhir'] = form_data['akhir']
       self.__input_schema['risiko']['kejadian'] = form_data['kejadian']
 
     return self.__input_schema
@@ -122,6 +128,27 @@ class RisikoTransformer:
 
   # transform output to easily generate form and table
   def transform_output(self, db_data):
-    # for item in self.__output_schema:
-    #   print(db_data['_id'])
-    return db_data
+    transformed = []
+
+    for item in db_data:
+      temp_list = self.__do_transform(item)      
+
+      transformed.append(temp_list)
+
+    return transformed
+
+  
+  def __do_transform(self, transform):
+    temp_list = []
+
+    for key, value in transform.items():
+      temp_dictionary = {}
+      temp_dictionary['field'] = key
+      temp_dictionary['value'] = value
+
+      if type(value) is dict:
+        temp_dictionary['value'] = self.__do_transform(value)
+
+      temp_list.append(temp_dictionary)
+
+    return temp_list
