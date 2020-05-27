@@ -23,6 +23,7 @@ def index(kategori):
 
 @referensi_blueprint.route('/referensi/<kategori>', methods=['POST'])
 def store(kategori):
+  # TODO: create validation
   try:
     query_result = referensi(kategori).insert(request.json)
   except Exception as error:

@@ -19,9 +19,10 @@ def index():
     message['status'] = error
     return message
   
-  # transform = RisikoTransformer().transform_output(query_result)
+  transform = RisikoTransformer().transform_output(query_result)
 
-  message['data'] = query_result
+  message['data'] = transform
+  message['raw'] = query_result
   return jsonify(message)
 
 
