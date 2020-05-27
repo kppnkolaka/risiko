@@ -115,13 +115,15 @@ class RisikoTransformer:
   ]
 
 
-  def transform_input(self, form_data):
-    if len(form_data) < 7:
+  def transform_input(self, kategori, form_data):
+    if kategori == 'utama':
       self.__input_schema['nomor'] = form_data['nomor']
       self.__input_schema['sasaran_organisasi'] = Sasaran().show(form_data['sasaran_organisasi_id'])
       self.__input_schema['besaran_risiko']['awal'] = form_data['awal']
       self.__input_schema['besaran_risiko']['akhir'] = form_data['akhir']
       self.__input_schema['risiko']['kejadian'] = form_data['kejadian']
+      self.__input_schema['risiko']['penyebab'] = form_data['penyebab']
+      self.__input_schema['risiko']['dampak'] = form_data['dampak']
 
     return self.__input_schema
 

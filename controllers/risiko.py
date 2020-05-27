@@ -26,9 +26,10 @@ def index():
   return jsonify(message)
 
 
-@risiko_blueprint.route('/risiko', methods=['POST'])
-def store():
-  transform = RisikoTransformer().transform_input(request.json)
+@risiko_blueprint.route('/risiko/<kategori>', methods=['POST'])
+def store(kategori):
+  # TODO: CREATE USER INPUT VALIDATION
+  transform = RisikoTransformer().transform_input(kategori, request.json)
 
   try:
     query_result = Risiko().store(transform)
